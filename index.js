@@ -2,16 +2,19 @@
 
 var chokidar     = require('chokidar'),
     debounce     = require('lodash').debounce,
-    fs           = require('fs')
+    fs           = require('fs'),
+    path         = require('path')
 
 var configFile = process.argv[2] || 'watchx.json'
 var CONFIG = JSON.parse(fs.readFileSync(configFile, 'utf-8'))
 var actions = require('./actions')(CONFIG)
 
-var watcher  = chokidar.watch(CONFIG['DIR'], {
+var watchedDir = path.resolve(CONFIG['DIR'])
+
+var watcher  = chokidar.watch(watchedDir, {
     ignored: CONFIG['IGNORE'],
     ignoreInitial: true,
-    cwd: CONFIG['DIR']
+    cwd: watchedDir
 })
 
 var eventsCounter = 0,
