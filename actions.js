@@ -1,17 +1,17 @@
 var EventEmitter = require('events').EventEmitter,
     actions      = new EventEmitter(),
-    spawn        = require('child_process').spawn,
+    exec         = require('child_process').exec,
     CONFIG       = {}
 
 actions.on('SINGLE_CHANGE', function(path) {
   var parameters = [CONFIG['ACTIONS']['SINGLE_CHANGE'], path]
-  var command = spawn('bash', parameters)
+  var command = exec(parameters.join(' '))
   command.stdout.pipe(process.stdout)
 })
 
 actions.on('MULTIPLE_CHANGE', function(paths) {
   var parameters = [CONFIG['ACTIONS']['MULTIPLE_CHANGE']].concat(paths)
-  var command = spawn('bash', parameters)
+  var command = exec(parameters.join(' '))
   command.stdout.pipe(process.stdout)
 })
 
