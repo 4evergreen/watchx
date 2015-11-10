@@ -34,9 +34,13 @@ var triggerAction = debounce(function() {
 }, CONFIG['DEBOUNCE'])
 
 watcher
+  .on('ready', function() {
+    console.log('Watching %s', this.options.cwd);
+  })
   .on('change', function(path) {
     eventsCounter++
     changedFiles.push(path)
+    console.log('%s has been changed', path);
 
     triggerAction()
   })
